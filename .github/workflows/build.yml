@@ -15,7 +15,7 @@ jobs:
       - name: Linux setup
         run: |
           sudo apt-get update
-          apt-get install -y \
+          sudo apt-get install -y \
           make binutils autoconf automake autotools-dev libtool \
           pkg-config git curl dpkg-dev gcc-mingw-w64 g++-mingw-w64 \
           autopoint libcppunit-dev libxml2-dev libgcrypt11-dev lzip
@@ -40,7 +40,7 @@ jobs:
               --disable-cxx \
               --enable-fat \
               CFLAGS="-mtune=generic -O2 -g0" && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: Build expat
@@ -53,7 +53,7 @@ jobs:
               --prefix=/usr/local/$HOST \
               --host=$HOST \
               --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: sqlite
@@ -66,7 +66,7 @@ jobs:
               --prefix=/usr/local/$HOST \
               --host=$HOST \
               --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: zlib
@@ -83,7 +83,7 @@ jobs:
               --libdir=/usr/local/$HOST/lib \
               --includedir=/usr/local/$HOST/include \
               --static && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: c-ares
@@ -98,7 +98,7 @@ jobs:
               --host=$HOST \
               --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` \
               LIBS="-lws2_32" && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: libssh2
@@ -114,14 +114,13 @@ jobs:
               --without-openssl \
               --with-wincng \
               LIBS="-lws2_32" && \
-          make install
+          sudo make install
         env:
           HOST: x86_64-w64-mingw32
       - name: add-version
-        run: |
-          sudo apt install wget
-          wget https://api.github.com/repos/aria2/aria2/git/refs/heads/master -O version.json
-          ls
+        sudo apt install wget
+        wget https://api.github.com/repos/aria2/aria2/git/refs/heads/master -O version.json
+        ls
       - name: Build aria2
         run: |
           autoreconf -i && ./mingw-config && make && \
