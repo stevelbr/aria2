@@ -118,9 +118,10 @@ jobs:
         env:
           HOST: x86_64-w64-mingw32
       - name: add-version
-        sudo apt install wget
-        wget https://api.github.com/repos/aria2/aria2/git/refs/heads/master -O version.json
-        ls
+        run: |
+          sudo apt install wget
+          wget https://api.github.com/repos/aria2/aria2/git/refs/heads/master -O version.json
+          ls
       - name: Build aria2
         run: |
           autoreconf -i && ./mingw-config && make && \
