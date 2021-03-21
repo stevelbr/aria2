@@ -129,9 +129,10 @@ jobs:
         env:
           HOST: x86_64-w64-mingw32
       - name: Publish
-        uses: fnkr/github-action-ghr@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        uses: xresloader/upload-to-github-release@v1
         env:
-          GHR_COMPRESS: xz
-          GHR_PATH: src/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "src/aria2c.exe"
+          tags: true
+          draft: true
