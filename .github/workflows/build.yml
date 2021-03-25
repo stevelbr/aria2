@@ -126,13 +126,13 @@ jobs:
         run: |
           autoreconf -i && ./mingw-config && make && \
           $HOST-strip src/aria2c.exe
+          mkdir ./binary
+          cp src/aria2c.exe ./binary.exe
         env:
           HOST: x86_64-w64-mingw32
       - name: Publish
-        uses: xresloader/upload-to-github-release@v1
+        uses: fnkr/github-action-ghr@v1
         env:
+          GHR_COMPRESS: xz
+          GHR_PATH: binary/
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          file: "src/aria2c.exe"
-          tags: true
-          draft: true
