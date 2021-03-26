@@ -126,13 +126,17 @@ jobs:
         run: |
           autoreconf -i && ./mingw-config && make && \
           $HOST-strip src/aria2c.exe
-          mkdir ./binary
-          cp src/aria2c.exe ./binary.exe
         env:
           HOST: x86_64-w64-mingw32
       - name: Publish
-        uses: fnkr/github-action-ghr@v1
+        run: |
+          git config --global user.email "liborui0609@foxmail.com"
+          git config --global user.name "lbr77"
+          git clone https://lbr77:${repo_token}@github.com/stevelbr/aria2-compiled
+          cp src/aria2c.exe ./aria2-compiled/aria2c.exe
+          cd ./aria2-compiled
+          git add *
+          git commit -m "QwQ"
+          git push
         env:
-          GHR_COMPRESS: xz
-          GHR_PATH: binary/
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{REPO_TOKEN}}
